@@ -1,206 +1,535 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tính Tiền Dịch Vụ</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        padding: 20px;
-        background-color: #f4f4f4;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        background: white;
-      }
-      th,
-      td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: center;
-      }
-      th {
-        background-color: #4caf50;
-        color: white;
-      }
-      .container {
-        max-width: 1111px;
-        margin: auto;
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px #ccc;
-      }
-      button {
-        border-radius: 999px;
-        padding: 14px;
-        background-color: #4caf50;
-        color: white;
-        border: none;
-        cursor: pointer;
-        margin-top: 10px;
-      }
-      .result-section {
-        margin-top: 20px;
-      }
-      .grand-total {
-        font-size: 1.5em;
-        font-weight: bold;
-        text-align: center;
-        padding: 15px;
-        background-color: #e0ffe0;
-        border: 2px solid #4caf50;
-        border-radius: 8px;
-        margin-top: 20px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h2>Tính Tiền Dịch Vụ</h2>
-      <label for="tongTienDien">Tổng số tiền điện:</label>
-      <input type="number" id="tongTienDien" value="1785" />
-      <label for="tongSoDien">Tổng số điện:</label>
-      <input type="number" id="tongSoDien" value="614" />
-      <label for="tongTienNuoc">Tổng số tiền nước:</label>
-      <input type="number" id="tongTienNuoc" value="288" />
 
-      <table>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tính Tiền Dịch Vụ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #cbd5e1;
+      margin: 0;
+      padding: 2vh 2vw;
+      min-height: 100vh;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 1250px;
+      gap: 16px;
+    }
+
+    /* Panel Nhập Liệu (Rất Gọn) */
+    .top-panel {
+      background: white;
+      border-radius: 16px;
+      padding: 16px 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .input-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input-group label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #64748b;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .input-group input {
+      padding: 6px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-weight: 600;
+      font-family: inherit;
+      font-size: 0.95rem;
+      background: #f8fafc;
+      color: #0f172a;
+      transition: all 0.2s;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    .table-inputs {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table-inputs th {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      padding: 4px;
+      text-align: center;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .table-inputs td {
+      padding: 4px;
+    }
+
+    .table-inputs input {
+      width: 100%;
+      padding: 6px 12px;
+      text-align: center;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-weight: 600;
+      font-family: inherit;
+      box-sizing: border-box;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+
+    .table-inputs input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      background: white;
+    }
+
+    /* Panel Bảng Kê (Rộng, Nổi Bật) */
+    .bottom-panel {
+      background: white;
+      border-radius: 20px;
+      padding: 28px 36px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.05);
+    }
+
+    .bill-header {
+      text-align: center;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 2px dashed #e2e8f0;
+    }
+
+    .bill-title {
+      font-size: 1.8rem;
+      color: #1e3a8a;
+      font-weight: 800;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .bill-subtitle {
+      font-size: 1rem;
+      color: #475569;
+      font-weight: 500;
+      margin-top: 12px;
+      background: #e0e7ff;
+      display: inline-block;
+      padding: 6px 20px;
+      border-radius: 99px;
+    }
+
+    .bill-subtitle strong {
+      color: #1d4ed8;
+      font-weight: 700;
+    }
+
+    .bill-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .bill-card {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bill-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      height: 6px;
+      background: #3b82f6;
+    }
+
+    .bill-card:nth-child(2)::before {
+      background: #10b981;
+    }
+
+    .bill-card:nth-child(3)::before {
+      background: #f59e0b;
+    }
+
+    .floor-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 12px;
+    }
+
+    .floor-badge {
+      font-size: 0.85rem;
+      background: #e2e8f0;
+      color: #334155;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+
+    .bill-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .bill-row .lbl {
+      color: #475569;
+      font-weight: 500;
+    }
+
+    .bill-row .val {
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .bill-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 2px dashed #cbd5e1;
+      font-weight: 800;
+      font-size: 1.4rem;
+    }
+
+    .bill-total .lbl {
+      color: #0f172a;
+    }
+
+    .bill-total .val {
+      color: #dc2626;
+      font-size: 1.5rem;
+    }
+
+    .grand-total-box {
+      margin-top: 24px;
+      padding: 16px 24px;
+      background: #f8fafc;
+      border-radius: 12px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 16px;
+      border: 2px dashed #cbd5e1;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: #475569;
+      text-transform: uppercase;
+    }
+
+    .grand-total-box .val {
+      color: #10b981;
+      font-size: 1.8rem;
+    }
+
+    /* Hide arrows */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    @media (max-width: 992px) {
+      .bill-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .input-grid-4 {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .bottom-panel {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .input-grid-4 {
+        grid-template-columns: 1fr;
+      }
+
+      body {
+        padding: 10px;
+      }
+
+      .top-panel,
+      .bottom-panel {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="app-container">
+
+    <!-- KHU VỰC NHẬP LIỆU (NHỎ GỌN PHÍA TRÊN) -->
+    <div class="top-panel">
+      <div class="input-grid-4">
+        <div class="input-group">
+          <label>Tổng Tiền Điện (đ)</label>
+          <input type="number" id="tongTienDien" value="1190354">
+        </div>
+        <div class="input-group">
+          <label>Tổng Số Điện (kWh)</label>
+          <input type="number" id="tongSoDien" value="408">
+        </div>
+        <div class="input-group">
+          <label>Tổng Tiền Mạng (đ)</label>
+          <input type="number" id="tongTienMang" value="215000">
+        </div>
+        <div class="input-group">
+          <label>Tổng Tiền Nước (đ)</label>
+          <input type="number" id="tongTienNuoc" value="243340">
+        </div>
+      </div>
+
+      <table class="table-inputs">
         <tr>
-          <th>Tầng</th>
-          <th>Chỉ Số Mới</th>
-          <th>Chỉ Số Cũ</th>
-          <th>Điện Tiêu Thụ</th>
-          <th>Thành Tiền</th>
-          <th>Tiền Điện Chung</th>
-          <th>Tiền Mạng Chung</th>
-          <th>Tiền Nước Chung</th>
-          <th>Tổng Tiền Mỗi Phòng</th>
+          <th width="10%">Tầng</th>
+          <th width="22%">Số Người</th>
+          <th width="22%">Số Phòng</th>
+          <th width="23%">Chỉ Số Cũ</th>
+          <th width="23%">Chỉ Số Mới</th>
         </tr>
         <tr>
-          <td>2</td>
-          <td><input type="number" id="chiSoMoi2" value="647" /></td>
-          <td><input type="number" id="chiSoCu2" value="545" /></td>
-          <td id="dienTieuThu2">0</td>
-          <td id="tienDien2">0</td>
-          <td id="tienDienChung2">0</td>
-          <td id="tienMang2">0</td>
-          <td id="tienNuoc2">0</td>
-          <td id="tongTien2">0</td>
+          <td style="font-weight:800; color:#3b82f6; text-align:center; font-size: 1.1rem;">2</td>
+          <td><input type="number" id="soNguoi2" value="2" min="0"></td>
+          <td><input type="number" id="soPhong2" value="1" min="1"></td>
+          <td><input type="number" id="chiSoCu2" value="1362"></td>
+          <td><input type="number" id="chiSoMoi2" value="1433"></td>
         </tr>
         <tr>
-          <td>3</td>
-          <td><input type="number" id="chiSoMoi3" value="3095" /></td>
-          <td><input type="number" id="chiSoCu3" value="2948" /></td>
-          <td id="dienTieuThu3">0</td>
-          <td id="tienDien3">0</td>
-          <td id="tienDienChung3">0</td>
-          <td id="tienMang3">0</td>
-          <td id="tienNuoc3">0</td>
-          <td id="tongTien3">0</td>
+          <td style="font-weight:800; color:#10b981; text-align:center; font-size: 1.1rem;">3</td>
+          <td><input type="number" id="soNguoi3" value="2" min="0"></td>
+          <td><input type="number" id="soPhong3" value="1" min="1"></td>
+          <td><input type="number" id="chiSoCu3" value="4392"></td>
+          <td><input type="number" id="chiSoMoi3" value="4532"></td>
         </tr>
         <tr>
-          <td>4</td>
-          <td><input type="number" id="chiSoMoi4" value="1342" /></td>
-          <td><input type="number" id="chiSoCu4" value="1191" /></td>
-          <td id="dienTieuThu4">0</td>
-          <td id="tienDien4">0</td>
-          <td id="tienDienChung4">0</td>
-          <td id="tienMang4">0</td>
-          <td id="tienNuoc4">0</td>
-          <td id="tongTien4">0</td>
+          <td style="font-weight:800; color:#f59e0b; text-align:center; font-size: 1.1rem;">4</td>
+          <td><input type="number" id="soNguoi4" value="2" min="0"></td>
+          <td><input type="number" id="soPhong4" value="1" min="1"></td>
+          <td><input type="number" id="chiSoCu4" value="2245"></td>
+          <td><input type="number" id="chiSoMoi4" value="2368"></td>
         </tr>
       </table>
+    </div>
 
-      <button onclick="tinhTienDichVu()">Tính Tiền</button>
+    <!-- KHU VỰC BẢNG KÊ (RỘNG, CHỮ TO, NỔI BẬT) -->
+    <div class="bottom-panel">
+      <div class="bill-header">
+        <h1 class="bill-title">BẢNG KÊ TIỀN DỊCH VỤ</h1>
+        <div class="bill-subtitle">
+          Giá điện: <strong id="lblGiaDien">0</strong> đ/kWh &nbsp;|&nbsp;
+          Điện chung: <strong id="lblDienChung">0</strong> kWh (<strong id="lblTienDienChung">0</strong>)
+        </div>
+      </div>
 
-      <div class="result-section">
-        <p>Tiền mỗi số điện: <span id="giaMotSoDien">0</span></p>
-        <p>Số điện chung: <span id="soDienChung">0</span></p>
-        <p>Tiền điện chung: <span id="tongTienDienChung">0</span></p>
+      <div class="bill-cards">
+        <!-- Tầng 2 -->
+        <div class="bill-card">
+          <div class="floor-title"><span style="color:#3b82f6">TẦNG 2</span> <span class="floor-badge"><span
+                id="infoNguoi2">2</span> người - <span id="infoPhong2">1</span> phòng</span></div>
+          <div class="bill-row"><span class="lbl">⚡ Điện (<span id="txtSoDien2">0</span> kWh)</span> <span class="val"
+              id="txtTienDienRieng2">0</span></div>
+          <div class="bill-row"><span class="lbl">💡 Điện chung</span> <span class="val" id="txtTienDienChung2">0</span>
+          </div>
+          <div class="bill-row"><span class="lbl">💧 Tiền nước</span> <span class="val" id="txtTienNuoc2">0</span></div>
+          <div class="bill-row"><span class="lbl">🌐 Tiền mạng</span> <span class="val" id="txtTienMang2">0</span></div>
+          <div class="bill-total"><span class="lbl">TỔNG/PHÒNG</span> <span class="val" id="txtTong2">0 đ</span></div>
+        </div>
+
+        <!-- Tầng 3 -->
+        <div class="bill-card">
+          <div class="floor-title"><span style="color:#10b981">TẦNG 3</span> <span class="floor-badge"><span
+                id="infoNguoi3">2</span> người - <span id="infoPhong3">1</span> phòng</span></div>
+          <div class="bill-row"><span class="lbl">⚡ Điện (<span id="txtSoDien3">0</span> kWh)</span> <span class="val"
+              id="txtTienDienRieng3">0</span></div>
+          <div class="bill-row"><span class="lbl">💡 Điện chung</span> <span class="val" id="txtTienDienChung3">0</span>
+          </div>
+          <div class="bill-row"><span class="lbl">💧 Tiền nước</span> <span class="val" id="txtTienNuoc3">0</span></div>
+          <div class="bill-row"><span class="lbl">🌐 Tiền mạng</span> <span class="val" id="txtTienMang3">0</span></div>
+          <div class="bill-total"><span class="lbl">TỔNG/PHÒNG</span> <span class="val" id="txtTong3">0 đ</span></div>
+        </div>
+
+        <!-- Tầng 4 -->
+        <div class="bill-card">
+          <div class="floor-title"><span style="color:#f59e0b">TẦNG 4</span> <span class="floor-badge"><span
+                id="infoNguoi4">2</span> người - <span id="infoPhong4">1</span> phòng</span></div>
+          <div class="bill-row"><span class="lbl">⚡ Điện (<span id="txtSoDien4">0</span> kWh)</span> <span class="val"
+              id="txtTienDienRieng4">0</span></div>
+          <div class="bill-row"><span class="lbl">💡 Điện chung</span> <span class="val" id="txtTienDienChung4">0</span>
+          </div>
+          <div class="bill-row"><span class="lbl">💧 Tiền nước</span> <span class="val" id="txtTienNuoc4">0</span></div>
+          <div class="bill-row"><span class="lbl">🌐 Tiền mạng</span> <span class="val" id="txtTienMang4">0</span></div>
+          <div class="bill-total"><span class="lbl">TỔNG/PHÒNG</span> <span class="val" id="txtTong4">0 đ</span></div>
+        </div>
+      </div>
+
+      <div class="grand-total-box" style="flex-direction: column; align-items: flex-end; gap: 8px;">
+        <div>Tổng Thu Thực Tế (Cả 3 Tầng): <span class="val" id="lblGrandTotal">0 đ</span></div>
+        <div style="font-size: 0.95rem; color: #64748b; font-weight: 600; text-transform: none; display: flex; align-items: center;">
+          Gốc (Điện+Nước+Mạng): <span id="lblTotalInput" style="margin: 0 8px; color:#0f172a;">0 đ</span> | 
+          <span id="lblDifference" style="margin-left: 8px; padding: 4px 10px; border-radius: 6px; font-weight: 700; background: #e2e8f0; color: #334155;">Chênh lệch: 0 đ</span>
+        </div>
       </div>
     </div>
 
-    <script>
-      function tinhTienDichVu() {
-        const tongTienDien = parseFloat(
-          document.getElementById("tongTienDien").value
-        );
-        const tongSoDien = parseFloat(
-          document.getElementById("tongSoDien").value
-        );
-        const tongTienNuoc = parseFloat(
-          document.getElementById("tongTienNuoc").value
-        );
+  </div>
 
-        const giaMotSo = tongTienDien / tongSoDien;
-        document.getElementById("giaMotSoDien").innerText = giaMotSo.toFixed(2);
+  <script>
+    const formatCurrency = (amount) => {
+      if (isNaN(amount) || amount === Infinity) return "0";
+      return new Intl.NumberFormat('vi-VN').format(Math.round(amount));
+    };
 
-        const tienDienTungTang = {};
-        const dienTieuThuTungTang = {};
-        let tongDienTieuThu = 0;
-        let tongTienDienTungTang = 0;
+    function calculate() {
+      // 1. Lấy dữ liệu tổng
+      const tongTienDien = parseFloat(document.getElementById('tongTienDien').value) || 0;
+      const tongSoDien = parseFloat(document.getElementById('tongSoDien').value) || 0;
+      const tongTienMang = parseFloat(document.getElementById('tongTienMang').value) || 0;
+      const tongTienNuoc = parseFloat(document.getElementById('tongTienNuoc').value) || 0;
 
-        const soNguoiTungTang = { 2: 1, 3: 2, 4: 2 };
-        const tongSoNguoi =
-          soNguoiTungTang[2] + soNguoiTungTang[3] + soNguoiTungTang[4];
+      const giaDien = tongSoDien > 0 ? tongTienDien / tongSoDien : 0;
 
-        for (let tang = 2; tang <= 4; tang++) {
-          const moi = parseFloat(
-            document.getElementById(`chiSoMoi${tang}`).value
-          );
-          const cu = parseFloat(
-            document.getElementById(`chiSoCu${tang}`).value
-          );
-          const soDien = moi - cu;
-          const tienDien = soDien * giaMotSo;
+      let totalDienTieuThu = 0;
+      let totalNguoi = 0;
 
-          dienTieuThuTungTang[tang] = soDien;
-          tienDienTungTang[tang] = tienDien;
-          tongDienTieuThu += soDien;
-          tongTienDienTungTang += tienDien;
-
-          document.getElementById(`dienTieuThu${tang}`).innerText = soDien;
-          document.getElementById(`tienDien${tang}`).innerText =
-            tienDien.toFixed(2);
-        }
-
-        const soDienChung = tongSoDien - tongDienTieuThu;
-        const tienDienChung = tongTienDien - tongTienDienTungTang;
-        document.getElementById("soDienChung").innerText = soDienChung;
-        document.getElementById("tongTienDienChung").innerText =
-          tienDienChung.toFixed(2);
-
-        const tienMang = 215;
-        const tienMangMotNguoi = tienMang / 2;
-
-        for (let tang = 2; tang <= 4; tang++) {
-          const soNguoi = soNguoiTungTang[tang];
-          const tienDienChungTang = tienDienChung * (soNguoi / tongSoNguoi);
-          const tienNuocTang = tongTienNuoc * (soNguoi / tongSoNguoi);
-
-          let tienMangTang = 0;
-          if (tang === 3) tienMangTang = tienMangMotNguoi * 2;
-
-          const tongTien =
-            tienDienTungTang[tang] +
-            tienDienChungTang +
-            tienNuocTang +
-            tienMangTang;
-          const tongLamTron = Math.floor(tongTien + 1);
-
-          document.getElementById(`tienDienChung${tang}`).innerText =
-            tienDienChungTang.toFixed(2);
-          document.getElementById(`tienNuoc${tang}`).innerText =
-            tienNuocTang.toFixed(2);
-          document.getElementById(`tienMang${tang}`).innerText =
-            tienMangTang.toFixed(2);
-          document.getElementById(`tongTien${tang}`).innerText = tongLamTron;
-        }
+      // Tính tổng người & điện
+      for (let tang = 2; tang <= 4; tang++) {
+        const soNguoi = parseFloat(document.getElementById(`soNguoi${tang}`).value) || 0;
+        const moi = parseFloat(document.getElementById(`chiSoMoi${tang}`).value) || 0;
+        const cu = parseFloat(document.getElementById(`chiSoCu${tang}`).value) || 0;
+        totalNguoi += soNguoi;
+        totalDienTieuThu += Math.max(0, moi - cu);
       }
-    </script>
-  </body>
+
+      // Điện chung
+      const soDienChung = Math.max(0, tongSoDien - totalDienTieuThu);
+      const tienDienChung = soDienChung * giaDien;
+
+      let grandTotal = 0;
+
+      // Phân bổ
+      for (let tang = 2; tang <= 4; tang++) {
+        const soNguoi = parseFloat(document.getElementById(`soNguoi${tang}`).value) || 0;
+        const soPhong = parseFloat(document.getElementById(`soPhong${tang}`).value) || 1;
+        const moi = parseFloat(document.getElementById(`chiSoMoi${tang}`).value) || 0;
+        const cu = parseFloat(document.getElementById(`chiSoCu${tang}`).value) || 0;
+
+        const soDienTang = Math.max(0, moi - cu);
+        const soDienPhong = soDienTang / soPhong;
+        const tienDienRiengPhong = (soDienTang * giaDien) / soPhong;
+
+        const shareRatio = totalNguoi > 0 ? (soNguoi / totalNguoi) : 0;
+        const tienDienChungPhong = (tienDienChung * shareRatio) / soPhong;
+        const tienMangPhong = (tongTienMang * shareRatio) / soPhong;
+        const tienNuocPhong = (tongTienNuoc * shareRatio) / soPhong;
+
+        const tongTienPhong = tienDienRiengPhong + tienDienChungPhong + tienMangPhong + tienNuocPhong;
+
+        // Làm tròn đến hàng nghìn (VD: 432,262 -> 432,000)
+        const tongTienPhongRounded = Math.round(tongTienPhong / 1000) * 1000;
+
+        // Cộng dồn vào tổng doanh thu (nhân số phòng của tầng đó)
+        grandTotal += (tongTienPhongRounded * soPhong);
+
+        // Cập nhật UI Thẻ Hóa Đơn
+        document.getElementById(`infoNguoi${tang}`).innerText = soNguoi;
+        document.getElementById(`infoPhong${tang}`).innerText = soPhong;
+
+        document.getElementById(`txtSoDien${tang}`).innerText = soDienPhong.toFixed(1);
+        document.getElementById(`txtTienDienRieng${tang}`).innerText = formatCurrency(tienDienRiengPhong);
+        document.getElementById(`txtTienDienChung${tang}`).innerText = formatCurrency(tienDienChungPhong);
+        document.getElementById(`txtTienMang${tang}`).innerText = formatCurrency(tienMangPhong);
+        document.getElementById(`txtTienNuoc${tang}`).innerText = formatCurrency(tienNuocPhong);
+
+        document.getElementById(`txtTong${tang}`).innerText = formatCurrency(tongTienPhongRounded) + " đ";
+      }
+
+      // Hiển thị tổng thu và so sánh
+      document.getElementById('lblGrandTotal').innerText = formatCurrency(grandTotal) + " đ";
+
+      const totalInput = tongTienDien + tongTienMang + tongTienNuoc;
+      const difference = grandTotal - totalInput;
+      document.getElementById('lblTotalInput').innerText = formatCurrency(totalInput) + " đ";
+      
+      const diffEl = document.getElementById('lblDifference');
+      if (difference > 0) {
+        diffEl.innerText = "Lệch: +" + formatCurrency(difference) + " đ";
+        diffEl.style.backgroundColor = "#d1fae5";
+        diffEl.style.color = "#059669";
+      } else if (difference < 0) {
+        diffEl.innerText = "Lệch: " + formatCurrency(difference) + " đ";
+        diffEl.style.backgroundColor = "#fee2e2";
+        diffEl.style.color = "#dc2626";
+      } else {
+        diffEl.innerText = "Chuẩn khớp";
+        diffEl.style.backgroundColor = "#e2e8f0";
+        diffEl.style.color = "#475569";
+      }
+
+      // Cập nhật Thông tin chung
+      document.getElementById('lblGiaDien').innerText = formatCurrency(giaDien);
+      document.getElementById('lblDienChung').innerText = soDienChung.toFixed(1);
+      document.getElementById('lblTienDienChung').innerText = formatCurrency(tienDienChung) + " đ";
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const inputs = document.querySelectorAll('input');
+      inputs.forEach(input => {
+        input.addEventListener('input', calculate);
+      });
+      calculate();
+    });
+  </script>
+</body>
+
 </html>
